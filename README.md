@@ -1,7 +1,6 @@
 # comp3021
 
-Author: CHOI, Hong Joon
-Std Id: 20161472
+Hong Joon CHOI 20161472
 
 HELLLOOOOOO WORRRRLD
 

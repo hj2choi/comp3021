@@ -2,36 +2,54 @@ package base;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.io.*;
 
-public class NoteBook {
+public class NoteBook implements Serializable {
 	private ArrayList<Folder> folders;
 	public NoteBook() {
 		folders = new ArrayList<Folder>();
 	}
-	
+
+	public NoteBook(String file) {
+		//TODO
+		// How to load object in memory from file
+		FileInputStream fis = null;
+		ObjectInputStream in = null;
+		try {
+			fis = new FileInputStream(file);
+			in = new ObjectInputStream(fis);
+			NoteBook n = (NoteBook) in.readObject();
+			this.folders = n.getFolders();
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//TODO
+	}
+
 	public boolean createTextNote(String folderName, String title) {
 		TextNote note = new TextNote(title);
 		return insertNote(folderName, note);
 	}
-	
+
 	public boolean createTextNote(String folderName, String title, String content) {
 		TextNote note = new TextNote(title, content);
 		return insertNote(folderName, note);
 	}
-	
+
 	public boolean createImageNote(String folderName, String title) {
 		ImageNote note = new ImageNote(title);
 		return insertNote(folderName, note);
 	}
-	
-	
+
+
 	public ArrayList<Folder> getFolders() {
 		return folders;
 	}
-	
+
 	public boolean insertNote(String folderName, Note note) {
 		Folder targetFolder = new Folder(folderName);
-		
+
 		//STEP 1
 		boolean folderExists=false;
 		for (int i=0; i<folders.size(); ++i) {
@@ -45,7 +63,7 @@ public class NoteBook {
 			targetFolder = new Folder(folderName);
 			folders.add(targetFolder);
 		}
-		
+
 		// STEP 2
 		for (int i=0; i<targetFolder.getNotes().size(); ++i) {
 			if (targetFolder.getNotes().get(i).equals(note)) {
@@ -53,19 +71,19 @@ public class NoteBook {
 				return false;
 			}
 		}
-		
+
 		// STEP 3
 		targetFolder.addNote(note);
 		return true;
 	}
-	
+
 	public void sortFolders() {
 		for (int i=0; i<folders.size(); ++i) {
 			folders.get(i).sortNotes();
 		}
 		Collections.sort(folders);
 	}
-	
+
 	public ArrayList<Note> searchNotes(String keywords) {
 		ArrayList<Note> result = new ArrayList<Note>();
 		for (int i=0; i<folders.size(); ++i) {
@@ -73,4 +91,22 @@ public class NoteBook {
 		}
 		return result;
 	}
+
+	public boolean save(String file) {
+		NoteBook object = this;
+		// how to save object to file ?
+		FileOutputStream fos = null;
+		ObjectOutputStream out = null;
+		try {
+			fos = new FileOutputStream(file);
+			out = new ObjectOutputStream(fos);
+			out.writeObject(object);
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
 }

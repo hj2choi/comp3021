@@ -2,41 +2,42 @@ package base;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.io.*;
 
-public class Folder implements Comparable<Folder> {
+public class Folder implements Comparable<Folder>, Serializable {
 	private ArrayList<Note> notes;
 	private String name;
-	
+
 	public Folder(String name) {
 		this.name = name;
 		notes = new ArrayList<Note>();
 	}
-	
+
 	public void addNote(Note note) {
 		notes.add(note);
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}
-	
+
 	public ArrayList<Note> getNotes() {
 		return notes;
 	}
-	
+
 	public boolean equals(Folder other) {
 		return this.name.equals(other.getName());
 	}
-	
+
 	public String toString() {
 		int nText = 0;
 		int nImage = 0;
-		
+
 		//TODO
-		
+
 		return this.name + ":" + nText + ":" + nImage;
 	}
-	
+
 	public void sortNotes() {
 		Collections.sort(notes);
 	}
@@ -48,7 +49,7 @@ public class Folder implements Comparable<Folder> {
 		}
 		return 1;
 	}
-	
+
 	private boolean noteContainsKeyword(Note n, String keyword) {
 		// imageNote
 		String noteTitle = n.getTitle().toLowerCase();
@@ -66,10 +67,10 @@ public class Folder implements Comparable<Folder> {
 		}
 		return true;
 	}
-	
+
 	public ArrayList<Note> searchNotes(String keywords) {
 		ArrayList<Note> result = new ArrayList<Note>();
-		
+
 		String[] keywordList = keywords.split(" ");
 		for (int j=0; j<notes.size(); ++j) {
 
@@ -93,7 +94,7 @@ public class Folder implements Comparable<Folder> {
 				result.add(notes.get(j));
 			}
 		}
-		
+
 		return result;
 	}
 

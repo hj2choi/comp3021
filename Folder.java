@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.io.*;
 
 public class Folder implements Comparable<Folder>, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Note> notes;
 	private String name;
 
@@ -32,10 +36,16 @@ public class Folder implements Comparable<Folder>, Serializable {
 	public String toString() {
 		int nText = 0;
 		int nImage = 0;
-
-		//TODO
-
-		return this.name + ":" + nText + ":" + nImage;
+		
+		for (int i = 0; i < notes.size(); i++){
+			if (notes.get(i) instanceof TextNote){
+				nText += 1;
+			} else if (notes.get(i) instanceof ImageNote){
+				nImage += 1;
+			}
+		}
+		
+		return name + ":" + nText + ":" + nImage;
 	}
 
 	public void sortNotes() {

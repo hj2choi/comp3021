@@ -4,6 +4,10 @@ import java.io.*;
 
 public class TextNote extends Note implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String content;
 
 	public TextNote(String title) {
@@ -51,25 +55,23 @@ public class TextNote extends Note implements Serializable{
 		//TODO
 		//File file = new File(pathFolder + File.separator + ""/*TODO*/	+ ".txt");
 		//TODO
-		FileWriter writer = null;
-		BufferedWriter out = null;
-		try {
-			String noteTitle = this.getTitle();
-			noteTitle = noteTitle.replaceAll(" ", "_");
+		BufferedWriter bw = null;
+		try{
+		File file = new File(pathFolder + this.getTitle().replaceAll("\\s+", "_") + ".txt");
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			
+			FileWriter fw = new FileWriter(file);
+			bw = new BufferedWriter(fw);
 
-			File file = new File(pathFolder + File.separator + noteTitle + ".txt");
-			writer = new FileWriter(file.getAbsolutePath());
-			out = new BufferedWriter(writer);
-			out.write(this.getContent());
-			out.close();
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			bw.write(this.content);
+			bw.close();
+			
+			
+		} catch (IOException ioE){
+			ioE.printStackTrace();
 		}
-
-		return;
 	}
 
 

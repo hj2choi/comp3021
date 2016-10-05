@@ -33,8 +33,8 @@ public class testLab5 {
 		}
 
 		TextNote t = (TextNote) nb2.getFolders().get(0).getNotes().get(0);
+		System.out.println("dfads");
 		t.exportTextToFile("");
-
 		if(new File(((TextNote) nb2.getFolders().get(0).getNotes().get(0)).getTitle().replaceAll(" ", "_")+".txt").exists()){
 			System.out.println("TextNote exported in " + new File(((TextNote) nb2.getFolders().get(0).getNotes().get(0)).getTitle().replaceAll(" ", "_")+".txt").getAbsolutePath());
 		}else{

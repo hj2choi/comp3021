@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.io.*;
 
 public class NoteBook implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Folder> folders;
 	public NoteBook() {
 		folders = new ArrayList<Folder>();
@@ -15,7 +19,7 @@ public class NoteBook implements Serializable {
 		// How to load object in memory from file
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
-		try {
+		try{
 			fis = new FileInputStream(file);
 			in = new ObjectInputStream(fis);
 			NoteBook n = (NoteBook) in.readObject();
@@ -93,17 +97,14 @@ public class NoteBook implements Serializable {
 	}
 
 	public boolean save(String file) {
-		NoteBook object = this;
-		// how to save object to file ?
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;
-		try {
+		try{
 			fos = new FileOutputStream(file);
 			out = new ObjectOutputStream(fos);
-			out.writeObject(object);
+			out.writeObject(this);
 			out.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception e){
 			return false;
 		}
 		return true;

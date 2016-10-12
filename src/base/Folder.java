@@ -52,7 +52,6 @@ public class Folder implements Comparable<Folder>, Serializable {
 		Collections.sort(notes);
 	}
 
-	@Override
 	public int compareTo(Folder o) {
 		if (this.name.length() < o.getName().length()) {
 			return -1;
@@ -85,22 +84,44 @@ public class Folder implements Comparable<Folder>, Serializable {
 		for (int j=0; j<notes.size(); ++j) {
 
 			boolean searchFlag = true;
+			boolean orClauseFlag=false;
 			for (int i=0; i<keywordList.length; ++i) {
 				String term = keywordList[i].toLowerCase();
+				//System.out.print(term+" ");
 				// detect OR case
+				
 				if (i<keywordList.length-1 && keywordList[i+1].toLowerCase().equals("or")) {
-					String term2 = keywordList[i+2].toLowerCase();
-					if (!(noteContainsKeyword(notes.get(j), term) || noteContainsKeyword(notes.get(j), term2))) {
-						searchFlag = false;
+					//System.out.println("OR CASE");
+					// is already true in the sequence of or clause
+					if (orClauseFlag && searchFlag) {
+						//System.out.println("OR true carried");
+						searchFlag=true;
 					}
-					i=i+2;
+					else {
+						orClauseFlag=true;
+						searchFlag = true;
+						String term2 = keywordList[i+2].toLowerCase();
+						if (!(noteContainsKeyword(notes.get(j), term) || noteContainsKeyword(notes.get(j), term2))) {
+							searchFlag = false;
+						}
+					}
+					i=i+1;
+					if (i+1==keywordList.length-1) {
+						break;
+					}
 				}
 				// AND case
 				else {
+					orClauseFlag=false;
+					//System.out.println("AND CASE");
 					searchFlag = noteContainsKeyword(notes.get(j), term);
+					if (!searchFlag) {
+						break;
+					}
 				}
 			}
 			if (searchFlag) {
+				//System.out.println("====SEARCH TERM FOUND====");
 				result.add(notes.get(j));
 			}
 		}
